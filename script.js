@@ -1,88 +1,143 @@
-// ===== CONTAGEM REGRESSIVA =====
 
-const dataFesta = new Date("December 12, 2026 20:00:00").getTime();
+const intro = document.getElementById("intro");
+const site = document.getElementById("site");
+const ball = document.querySelector(".mirror-ball");
 
-const atualizarContador = () => {
+let opened = false;
 
-    const agora = new Date().getTime();
+ball.addEventListener("click", enterExperience);
+ball.addEventListener("touchstart", enterExperience,{passive:true});
 
-    const distancia = dataFesta - agora;
+function enterExperience(){
 
-    const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+if(opened) return;
+opened = true;
 
-    const horas = Math.floor(
-        (distancia % (1000 * 60 * 60 * 24))
-        /
-        (1000 * 60 * 60)
-    );
+ball.style.transition="transform 1.6s ease";
+intro.style.transition="opacity 1.3s ease";
 
-    const minutos = Math.floor(
-        (distancia % (1000 * 60 * 60))
-        /
-        (1000 * 60)
-    );
+ball.style.transform="scale(18) rotate(540deg)";
 
-    const segundos = Math.floor(
-        (distancia % (1000 * 60))
-        /
-        1000
-    );
+setTimeout(()=>{
+intro.style.opacity="0";
+},700);
 
-    document.getElementById("dias").innerHTML = dias;
-    document.getElementById("horas").innerHTML = horas;
-    document.getElementById("minutos").innerHTML = minutos;
-    document.getElementById("segundos").innerHTML = segundos;
+setTimeout(()=>{
+intro.style.display="none";
+site.style.display="block";
 
-};
+window.scrollTo({
+top:0,
+behavior:"instant"
+});
 
-setInterval(atualizarContador,1000);
+fadeSections();
 
-atualizarContador();
+startCountdown();
 
+},1600);
 
-// ===== ANIMAÇÃO =====
+}
 
-const elementos = document.querySelectorAll("section");
+function fadeSections(){
 
-const aparecer = () =>{
+const items=document.querySelectorAll(".hero,.placeholder,footer");
 
-    elementos.forEach(secao=>{
+const observer=new IntersectionObserver((entries)=>{
 
-        const topo = secao.getBoundingClientRect().top;
+entries.forEach(entry=>{
 
-        if(topo < window.innerHeight-120){
+if(entry.isIntersecting){
 
-            secao.style.opacity="1";
-            secao.style.transform="translateY(0px)";
+entry.target.animate([
+{opacity:0,transform:"translateY(60px)"},
+{opacity:1,transform:"translateY(0)"}
+],{
+duration:900,
+fill:"forwards",
+easing:"ease-out"
+});
 
-        }
+observer.unobserve(entry.target);
 
-    });
-
-};
-
-elementos.forEach(secao=>{
-
-    secao.style.opacity="0";
-    secao.style.transform="translateY(60px)";
-    secao.style.transition="1s";
+}
 
 });
 
-window.addEventListener("scroll",aparecer);
+},{threshold:.15});
 
-aparecer();
+items.forEach(i=>{
+i.style.opacity=0;
+observer.observe(i);
+});
 
+}
 
-// ===== BRILHO NO LOGO =====
+function startCountdown(){
 
-setInterval(()=>{
+const hero=document.querySelector(".hero");
 
-    const logo=document.querySelector(".logo");
+const box=document.createElement("div");
+box.style.marginTop="40px";
+box.style.fontSize="1.4rem";
+box.style.fontWeight="600";
 
-    logo.style.textShadow=
-    `0 0 ${
-        Math.random()*45
-    }px rgba(255,255,255,.45)`;
+hero.appendChild(box);
 
-},800);
+const target=new Date("2027-04-16T22:00:00");
+
+function update(){
+
+const now=new Date();
+
+const diff=target-now;
+
+if(diff<=0){
+
+box.innerHTML="A festa começou!";
+
+return;
+
+}
+
+const d=Math.floor(diff/1000/60/60/24);
+const h=Math.floor(diff/1000/60/60)%24;
+const m=Math.floor(diff/1000/60)%60;
+const s=Math.floor(diff/1000)%60;
+
+box.innerHTML=
+`${d} dias • ${h}h ${m}min ${s}s`;
+
+}
+
+update();
+
+setInterval(update,1000);
+
+}
+
+// pequeno efeito ao mover o celular ou mouse
+
+window.addEventListener("mousemove",(e)=>{
+
+if(opened) return;
+
+const x=(e.clientX/window.innerWidth-.5)*12;
+const y=(e.clientY/window.innerHeight-.5)*12;
+
+ball.style.transform=
+`rotateY(${x}deg) rotateX(${-y}deg)`;
+
+});
+
+window.addEventListener("deviceorientation",(e)=>{
+
+if(opened) return;
+
+const x=(e.gamma||0)/3;
+const y=(e.beta||0)/6;
+
+ball.style.transform=
+`rotateY(${x}deg) rotateX(${y}deg)`;
+
+});

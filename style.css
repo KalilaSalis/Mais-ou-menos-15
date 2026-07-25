@@ -1,211 +1,167 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+:root{
+ --bg:#08070b;
+ --wine:#620615;
+ --pink:#cc2656;
+ --silver:#d9d9df;
+ --glass:rgba(255,255,255,.08);
 }
 
-html{
-    scroll-behavior:smooth;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+
+html{scroll-behavior:smooth}
 
 body{
-    font-family:'Montserrat',sans-serif;
-    background:#090909;
-    color:#ffffff;
-    overflow-x:hidden;
+background:
+radial-gradient(circle at top,#2b0b18 0%,#08070b 45%,#000 100%);
+color:white;
+font-family:Montserrat,sans-serif;
+overflow-x:hidden;
 }
 
-/* Fundo com brilhos */
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-    radial-gradient(circle at 20% 20%,rgba(204,38,86,.35),transparent 30%),
-    radial-gradient(circle at 80% 80%,rgba(98,6,21,.45),transparent 35%),
-    radial-gradient(circle at center,rgba(255,255,255,.03),transparent 60%);
-    z-index:-2;
+#intro{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+position:relative;
+overflow:hidden;
 }
 
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    background-image:
-    radial-gradient(white 1px, transparent 1px);
-    background-size:45px 45px;
-    opacity:.08;
-    z-index:-1;
+#lights{
+position:absolute;
+inset:-30%;
+background:
+radial-gradient(circle,var(--pink) 0%,transparent 25%),
+radial-gradient(circle,var(--wine) 0%,transparent 22%),
+radial-gradient(circle,var(--silver) 0%,transparent 18%);
+background-size:35% 35%,40% 40%,30% 30%;
+animation:lights 18s linear infinite;
+opacity:.35;
+filter:blur(60px);
 }
 
-section{
-    width:100%;
-    padding:90px 8%;
+@keyframes lights{
+0%{transform:rotate(0) scale(1)}
+50%{transform:rotate(180deg) scale(1.15)}
+100%{transform:rotate(360deg) scale(1)}
 }
 
-#hero{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    position:relative;
+.mirror-ball{
+width:190px;
+height:190px;
+border-radius:50%;
+position:relative;
+background:
+linear-gradient(90deg,transparent 48%,rgba(255,255,255,.25) 49%,transparent 50%),
+linear-gradient(transparent 48%,rgba(255,255,255,.22) 49%,transparent 50%),
+radial-gradient(circle at 30% 30%,#fff,#cfcfd6 35%,#6f6f77 70%,#2c2c34 100%);
+background-size:18px 18px,18px 18px,100% 100%;
+box-shadow:
+0 0 35px rgba(255,255,255,.3),
+0 0 80px rgba(204,38,86,.25);
+animation:spin 12s linear infinite,float 5s ease-in-out infinite;
 }
 
-.escuro{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.45);
+.ball-glow{
+position:absolute;
+inset:-18px;
+border-radius:50%;
+border:2px solid rgba(255,255,255,.15);
+animation:pulse 3s infinite;
 }
 
-.conteudo{
-    position:relative;
-    z-index:2;
-    max-width:700px;
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{
+50%{translate:0 -10px}
+}
+@keyframes pulse{
+50%{transform:scale(1.08);opacity:.3}
 }
 
-.convite{
-    letter-spacing:6px;
-    color:#dddddd;
-    margin-bottom:20px;
-    font-size:.9rem;
+h1{
+font-family:Cinzel,serif;
+font-size:4rem;
+margin-top:40px;
+letter-spacing:4px;
 }
 
-.logo{
-    font-family:'Cinzel',serif;
-    font-size:7rem;
-    color:silver;
-    text-shadow:0 0 30px rgba(255,255,255,.25);
+.subtitle{
+color:#ddd;
+margin-top:10px;
 }
 
-h2{
-    font-family:'Cinzel',serif;
-    font-size:2.5rem;
-    margin-bottom:20px;
+.touch{
+margin-top:45px;
+opacity:.8;
+font-size:.95rem;
+animation:blink 2s infinite;
 }
 
-h2 span{
-    color:#cc2656;
+@keyframes blink{
+50%{opacity:.3}
 }
 
-.descricao{
-    color:#d8d8d8;
-    line-height:1.8;
-    margin:30px 0;
+#site{
+display:none;
 }
 
-.botao,
-button{
-    background:#cc2656;
-    color:white;
-    text-decoration:none;
-    border:none;
-    padding:15px 35px;
-    border-radius:40px;
-    cursor:pointer;
-    transition:.3s;
-    font-size:1rem;
+.hero{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:32px;
+text-align:center;
 }
 
-.botao:hover,
-button:hover{
-    background:#620615;
-    transform:translateY(-3px);
+.hero h2{
+font-family:Cinzel,serif;
+font-size:2.2rem;
+max-width:700px;
 }
 
-#countdown{
-    display:flex;
-    justify-content:center;
-    gap:25px;
-    flex-wrap:wrap;
-    margin-top:35px;
+.hero p{
+max-width:650px;
+margin:25px auto;
+line-height:1.8;
+color:#ddd;
 }
 
-#countdown div{
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    width:130px;
-    padding:25px;
+.btn{
+padding:15px 34px;
+border-radius:40px;
+background:linear-gradient(135deg,var(--pink),var(--wine));
+color:white;
+text-decoration:none;
+font-weight:600;
+box-shadow:0 0 30px rgba(204,38,86,.4);
 }
 
-#countdown span{
-    font-size:2.7rem;
-    font-weight:bold;
-    color:#cc2656;
+.placeholder{
+margin:40px 18px;
+padding:70px 25px;
+background:var(--glass);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,.12);
+border-radius:26px;
+text-align:center;
 }
 
-.card{
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(15px);
-    border-radius:20px;
-    padding:35px;
-    line-height:2;
-}
-
-.galeria{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-}
-
-.foto{
-    aspect-ratio:1;
-    background:rgba(255,255,255,.08);
-    border-radius:20px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#999;
-    font-size:1.2rem;
-}
-
-.botoes{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-input,
-textarea{
-    width:100%;
-    margin-bottom:20px;
-    padding:18px;
-    border:none;
-    border-radius:15px;
-    background:rgba(255,255,255,.08);
-    color:white;
-    font-size:1rem;
-}
-
-textarea{
-    min-height:180px;
-    resize:vertical;
+.placeholder h2{
+font-family:Cinzel,serif;
 }
 
 footer{
-    text-align:center;
-    padding:50px;
-    color:#888;
-    border-top:1px solid rgba(255,255,255,.08);
+padding:80px 20px;
+text-align:center;
+color:#ccc;
 }
 
-@media(max-width:700px){
-
-.logo{
-    font-size:4.5rem;
-}
-
-h2{
-    font-size:2rem;
-}
-
-#countdown div{
-    width:110px;
-}
-
+@media (min-width:768px){
+.mirror-ball{width:250px;height:250px}
+h1{font-size:5rem}
+.hero h2{font-size:3.2rem}
 }
