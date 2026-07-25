@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const botao = document.getElementById("entrar");
 
-    botao.addEventListener("click", () => {
+    if (botao) {
+        botao.addEventListener("click", () => {
 
-        document.getElementById("historia").scrollIntoView({
-            behavior: "smooth"
+            document.getElementById("historia").scrollIntoView({
+                behavior: "smooth"
+            });
+
         });
-
-    });
+    }
 
 });
