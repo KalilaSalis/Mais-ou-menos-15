@@ -1,0 +1,96 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#080808;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Tela inicial */
+
+#abertura{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    background:
+    radial-gradient(circle at top,#cc265640 0%,transparent 45%),
+    radial-gradient(circle at bottom,#62061580 0%,transparent 50%),
+    #080808;
+}
+
+.conteudo{
+    z-index:2;
+    padding:30px;
+}
+
+.apresenta{
+    color:#d6d6d6;
+    font-size:1rem;
+    letter-spacing:2px;
+    margin-bottom:25px;
+}
+
+.logo{
+    font-size:6rem;
+    color:silver;
+    margin-bottom:20px;
+}
+
+.nomes{
+    font-size:2rem;
+    color:white;
+    margin-bottom:40px;
+}
+
+.nomes span{
+    color:#cc2656;
+}
+
+#entrar{
+    background:#cc2656;
+    color:white;
+    border:none;
+    padding:15px 40px;
+    border-radius:40px;
+    font-size:1rem;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#entrar:hover{
+    background:#620615;
+}
+
+section:not(#abertura){
+    padding:90px 25px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+h2{
+    color:#cc2656;
+    margin-bottom:25px;
+    font-size:2rem;
+}
+
+footer{
+    padding:40px;
+    text-align:center;
+    color:#aaa;
+    border-top:1px solid #333;
+}
