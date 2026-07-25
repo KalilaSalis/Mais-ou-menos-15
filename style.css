@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
 
 *{
     margin:0;
@@ -12,96 +12,200 @@ html{
 
 body{
     font-family:'Montserrat',sans-serif;
-    background:#080808;
-    color:white;
+    background:#090909;
+    color:#ffffff;
     overflow-x:hidden;
 }
 
-#abertura{
+/* Fundo com brilhos */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%,rgba(204,38,86,.35),transparent 30%),
+    radial-gradient(circle at 80% 80%,rgba(98,6,21,.45),transparent 35%),
+    radial-gradient(circle at center,rgba(255,255,255,.03),transparent 60%);
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+    radial-gradient(white 1px, transparent 1px);
+    background-size:45px 45px;
+    opacity:.08;
+    z-index:-1;
+}
+
+section{
+    width:100%;
+    padding:90px 8%;
+}
+
+#hero{
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     text-align:center;
-    background:
-    radial-gradient(circle at top,#cc265640 0%,transparent 45%),
-    radial-gradient(circle at bottom,#62061580 0%,transparent 55%),
-    #080808;
+    position:relative;
+}
+
+.escuro{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.45);
 }
 
 .conteudo{
-    padding:30px;
+    position:relative;
+    z-index:2;
+    max-width:700px;
 }
 
-.apresenta{
-    font-size:1rem;
-    color:#d7d7d7;
-    letter-spacing:4px;
-    text-transform:uppercase;
-    margin-bottom:25px;
+.convite{
+    letter-spacing:6px;
+    color:#dddddd;
+    margin-bottom:20px;
+    font-size:.9rem;
 }
 
 .logo{
     font-family:'Cinzel',serif;
-    font-size:6rem;
+    font-size:7rem;
     color:silver;
-    letter-spacing:8px;
-    margin-bottom:20px;
-}
-
-.nomes{
-    font-family:'Cormorant Garamond',serif;
-    font-size:2.5rem;
-    margin-bottom:40px;
-    font-weight:600;
-}
-
-.nomes span{
-    color:#cc2656;
-}
-
-#entrar{
-    font-family:'Montserrat',sans-serif;
-    background:#cc2656;
-    color:white;
-    border:none;
-    border-radius:40px;
-    padding:16px 42px;
-    font-size:1rem;
-    cursor:pointer;
-    transition:.3s;
-}
-
-#entrar:hover{
-    background:#620615;
-    transform:scale(1.05);
-}
-
-section:not(#abertura){
-    padding:90px 25px;
-}
-
-.container{
-    max-width:1000px;
-    margin:auto;
+    text-shadow:0 0 30px rgba(255,255,255,.25);
 }
 
 h2{
-    font-family:'Cormorant Garamond',serif;
-    font-size:2.7rem;
-    color:#cc2656;
+    font-family:'Cinzel',serif;
+    font-size:2.5rem;
     margin-bottom:20px;
 }
 
-p{
-    font-size:1.1rem;
+h2 span{
+    color:#cc2656;
+}
+
+.descricao{
+    color:#d8d8d8;
     line-height:1.8;
-    color:#dddddd;
+    margin:30px 0;
+}
+
+.botao,
+button{
+    background:#cc2656;
+    color:white;
+    text-decoration:none;
+    border:none;
+    padding:15px 35px;
+    border-radius:40px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:1rem;
+}
+
+.botao:hover,
+button:hover{
+    background:#620615;
+    transform:translateY(-3px);
+}
+
+#countdown{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+    margin-top:35px;
+}
+
+#countdown div{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    width:130px;
+    padding:25px;
+}
+
+#countdown span{
+    font-size:2.7rem;
+    font-weight:bold;
+    color:#cc2656;
+}
+
+.card{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    padding:35px;
+    line-height:2;
+}
+
+.galeria{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.foto{
+    aspect-ratio:1;
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#999;
+    font-size:1.2rem;
+}
+
+.botoes{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+input,
+textarea{
+    width:100%;
+    margin-bottom:20px;
+    padding:18px;
+    border:none;
+    border-radius:15px;
+    background:rgba(255,255,255,.08);
+    color:white;
+    font-size:1rem;
+}
+
+textarea{
+    min-height:180px;
+    resize:vertical;
 }
 
 footer{
-    border-top:1px solid #333;
-    padding:40px;
     text-align:center;
+    padding:50px;
     color:#888;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+@media(max-width:700px){
+
+.logo{
+    font-size:4.5rem;
+}
+
+h2{
+    font-size:2rem;
+}
+
+#countdown div{
+    width:110px;
+}
+
 }
