@@ -4,162 +4,99 @@
     box-sizing:border-box;
 }
 
+html,
 body{
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
     background:#000;
-    overflow:hidden;
+
     font-family:'Montserrat',sans-serif;
+
 }
 
-#intro{
-    position:relative;
-    width:100vw;
-    height:100vh;
+/* Canvas 3D */
 
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+#scene{
 
-    overflow:hidden;
-}
+    position:fixed;
 
-/* Reflexos coloridos */
-
-#lights{
-    position:absolute;
     inset:0;
 
-    background:
-    radial-gradient(circle at 25% 35%, rgba(204,38,86,.18), transparent 30%),
-    radial-gradient(circle at 75% 28%, rgba(98,6,21,.25), transparent 35%),
-    radial-gradient(circle at 50% 80%, rgba(255,255,255,.05), transparent 45%);
+    width:100vw;
 
-    filter:blur(40px);
+    height:100vh;
 
-    animation:lightsMove 12s ease-in-out infinite alternate;
-}
-
-@keyframes lightsMove{
-
-    from{
-        transform:scale(1) rotate(0deg);
-    }
-
-    to{
-        transform:scale(1.15) rotate(10deg);
-    }
+    background:#000;
 
 }
 
-/* Globo */
+/* Texto */
 
-#ball{
+#touch{
 
-    width:min(45vw,260px);
+    position:absolute;
 
-    margin-bottom:45px;
+    left:50%;
+    bottom:8%;
 
-    animation:spin 18s linear infinite,
-              floating 5s ease-in-out infinite;
-
-    filter:
-    drop-shadow(0 0 18px rgba(255,255,255,.15))
-    drop-shadow(0 0 60px rgba(204,38,86,.15));
-
-}
-
-/* Rotação */
-
-@keyframes spin{
-
-    from{
-        transform:rotate(0deg);
-    }
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
-/* Flutuação */
-
-@keyframes floating{
-
-    0%{
-        translate:0 0;
-    }
-
-    50%{
-        translate:0 -10px;
-    }
-
-    100%{
-        translate:0 0;
-    }
-
-}
-
-/* Logo */
-
-h1{
+    transform:translateX(-50%);
 
     color:white;
 
-    font-family:'Cinzel',serif;
+    font-size:15px;
 
-    font-size:70px;
+    letter-spacing:8px;
 
-    font-weight:600;
+    text-transform:uppercase;
 
-    letter-spacing:10px;
+    white-space:nowrap;
 
-    margin-bottom:8px;
+    opacity:0;
+
+    transition:opacity 1.5s ease;
 
     text-shadow:
-    0 0 10px rgba(255,255,255,.3);
+    0 0 10px rgba(255,255,255,.25);
+
+    user-select:none;
+
+    pointer-events:none;
 
 }
 
-.subtitle{
+/* Quando aparecer */
 
-    color:#d8d8d8;
+#touch.show{
 
-    font-size:20px;
+    opacity:.45;
 
-    letter-spacing:5px;
-
-    text-transform:uppercase;
+    animation:pulse 2.2s infinite;
 
 }
 
-.touch{
-
-    margin-top:70px;
-
-    color:#888;
-
-    font-size:13px;
-
-    letter-spacing:4px;
-
-    text-transform:uppercase;
-
-    animation:pulse 2s infinite;
-
-}
+/* Respiração */
 
 @keyframes pulse{
 
-    0%,100%{
+    0%{
 
-        opacity:.35;
+        opacity:.25;
 
     }
 
     50%{
 
-        opacity:1;
+        opacity:.65;
+
+    }
+
+    100%{
+
+        opacity:.25;
 
     }
 
@@ -169,33 +106,13 @@ h1{
 
 @media(max-width:700px){
 
-    #ball{
-
-        width:220px;
-
-    }
-
-    h1{
-
-        font-size:52px;
-
-        letter-spacing:6px;
-
-    }
-
-    .subtitle{
-
-        font-size:16px;
-
-        letter-spacing:3px;
-
-    }
-
-    .touch{
-
-        margin-top:50px;
+    #touch{
 
         font-size:12px;
+
+        letter-spacing:5px;
+
+        bottom:7%;
 
     }
 
