@@ -9,32 +9,64 @@ body{
 
     width:100%;
     height:100%;
-
     overflow:hidden;
-
     background:#000;
-
-    font-family:'Montserrat',sans-serif;
+    font-family:"Montserrat",sans-serif;
 
 }
 
-/* Canvas 3D */
+body{
+
+    position:relative;
+
+}
 
 #scene{
 
     position:fixed;
-
     inset:0;
-
     width:100vw;
-
     height:100vh;
-
-    background:#000;
+    overflow:hidden;
 
 }
 
-/* Texto */
+canvas{
+
+    display:block;
+    width:100%;
+    height:100%;
+
+}
+
+#loading{
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:14px;
+    letter-spacing:6px;
+    text-transform:uppercase;
+
+    background:#000;
+
+    transition:opacity .8s ease;
+
+    z-index:50;
+
+}
+
+#loading.hide{
+
+    opacity:0;
+    pointer-events:none;
+
+}
 
 #touch{
 
@@ -47,7 +79,9 @@ body{
 
     color:white;
 
-    font-size:15px;
+    font-weight:300;
+
+    font-size:14px;
 
     letter-spacing:8px;
 
@@ -57,34 +91,33 @@ body{
 
     opacity:0;
 
-    transition:opacity 1.5s ease;
+    transition:opacity 1.2s ease;
 
     text-shadow:
-    0 0 10px rgba(255,255,255,.25);
+        0 0 8px rgba(255,255,255,.15),
+        0 0 18px rgba(255,255,255,.08);
 
-    user-select:none;
+    z-index:20;
 
     pointer-events:none;
 
-}
+    user-select:none;
 
-/* Quando aparecer */
+}
 
 #touch.show{
 
-    opacity:.45;
+    opacity:.55;
 
-    animation:pulse 2.2s infinite;
+    animation:pulse 2.3s infinite;
 
 }
-
-/* Respiração */
 
 @keyframes pulse{
 
     0%{
 
-        opacity:.25;
+        opacity:.20;
 
     }
 
@@ -96,23 +129,42 @@ body{
 
     100%{
 
-        opacity:.25;
+        opacity:.20;
 
     }
 
 }
 
-/* Celular */
+.fadeOut{
 
-@media(max-width:700px){
+    animation:fadeOut .8s forwards;
+
+}
+
+@keyframes fadeOut{
+
+    to{
+
+        opacity:0;
+
+    }
+
+}
+
+@media (max-width:700px){
 
     #touch{
 
         font-size:12px;
-
         letter-spacing:5px;
-
         bottom:7%;
+
+    }
+
+    #loading{
+
+        font-size:12px;
+        letter-spacing:4px;
 
     }
 
