@@ -1,5 +1,7 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/GLTFLoader.js";
+// script.js
+
+import * as THREE from "https://unpkg.com/three@0.165.0/build/three.module.js";
+import { GLTFLoader } from "https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
@@ -8,100 +10,110 @@ const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     0.1,
-    100
+    1000
 );
 
-camera.position.set(0, 0, 18);
+camera.position.set(0,0,18);
 
 const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true
+    antialias:true,
+    alpha:true
 });
 
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.getElementById("scene").appendChild(renderer.domElement);
 
-document
-    .getElementById("scene")
-    .appendChild(renderer.domElement);
+// ==================== LUZES ====================
 
-const ambient = new THREE.AmbientLight(0xffffff, 2.5);
-scene.add(ambient);
+scene.add(new THREE.AmbientLight(0xffffff,1.6));
 
-const light1 = new THREE.PointLight(0xff5ca8, 120);
-light1.position.set(-8, 6, 6);
-scene.add(light1);
+const pink = new THREE.PointLight(0xcc2656,45,60);
+pink.position.set(-6,3,8);
+scene.add(pink);
 
-const light2 = new THREE.PointLight(0x700018, 90);
-light2.position.set(8, -5, 5);
-scene.add(light2);
+const wine = new THREE.PointLight(0x620615,40,60);
+wine.position.set(6,-2,7);
+scene.add(wine);
 
-const light3 = new THREE.PointLight(0xffffff, 60);
-light3.position.set(0, 10, 12);
-scene.add(light3);
+const white = new THREE.PointLight(0xffffff,35,80);
+white.position.set(0,5,12);
+scene.add(white);
+
+// ==================== MODELO ====================
 
 const loader = new GLTFLoader();
 
 let discoBall;
 
+const targetScale = 5;
+
+loader.load("disco-ball.glb",(gltf)=>{
+
+    discoBall = gltf.scene;
+
+    scene.add(discoBall);
+
+    const box = new THREE.Box3().setFromObject(discoBall);
+
+    const size = new THREE.Vector3();
+    box.getSize(size);
+
+    const maxSide = Math.max(size.x,size.y,size.z);
+
+    const scale = targetScale/maxSide;
+
+    discoBall.scale.setScalar(scale);
+
+    box.setFromObject(discoBall);
+
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+
+    discoBall.position.sub(center);
+
+    discoBall.position.z = -95;
+
+    discoBall.rotation.x = 0.25;
+    discoBall.rotation.y = Math.PI;
+
+});
+
 const clock = new THREE.Clock();
 
-const touch = document.getElementById("touch");
+let introFinished=false;
 
-loader.load(
+const touch=document.getElementById("touch");
 
-    "disco-ball.glb",
-
-    function(gltf){
-
-        discoBall = gltf.scene;
-
-        scene.add(discoBall);
-
-        discoBall.position.set(0,0,-28);
-
-        discoBall.scale.set(0.02,0.02,0.02);
-
-    },
-
-    undefined,
-
-    function(error){
-
-        console.error(error);
-
-    }
-
-);
-
-let finishedIntro = false;
+function easeOutCubic(x){
+    return 1-Math.pow(1-x,3);
+}
 
 function animate(){
 
     requestAnimationFrame(animate);
 
-    const t = Math.min(clock.getElapsedTime()/3,1);
+    const t=Math.min(clock.getElapsedTime()/3,1);
 
     if(discoBall){
 
-        const ease =
-            1-Math.pow(1-t,3);
+        const e=easeOutCubic(t);
 
-        discoBall.position.z =
-            -28 + ease*25;
+        discoBall.position.z=
+            THREE.MathUtils.lerp(
+                -95,
+                0,
+                e
+            );
 
-        const scale =
-            0.02 + ease*5.8;
+        discoBall.rotation.y+=0.010;
+        discoBall.rotation.x+=0.002;
+        discoBall.rotation.z+=0.0015;
 
-        discoBall.scale.set(scale,scale,scale);
+        if(t===1 && !introFinished){
 
-        discoBall.rotation.x += 0.006;
-        discoBall.rotation.y += 0.012;
-        discoBall.rotation.z += 0.004;
-
-        if(t>=1 && !finishedIntro){
-
-            finishedIntro=true;
+            introFinished=true;
 
             touch.classList.add("show");
 
@@ -114,10 +126,12 @@ function animate(){
 }
 animate();
 
-window.addEventListener("resize", () => {
+// ==================== RESPONSIVIDADE ====================
 
-    camera.aspect =
-        window.innerWidth /
+window.addEventListener("resize",()=>{
+
+    camera.aspect=
+        window.innerWidth/
         window.innerHeight;
 
     camera.updateProjectionMatrix();
@@ -129,45 +143,58 @@ window.addEventListener("resize", () => {
 
 });
 
-let entering = false;
+// ==================== ENTRADA NA PISTA ====================
 
-window.addEventListener("click", () => {
+let entering=false;
 
-    if(!finishedIntro) return;
+window.addEventListener("click",()=>{
 
+    if(!introFinished) return;
     if(entering) return;
 
-    entering = true;
+    entering=true;
 
-    touch.style.opacity = "0";
+    touch.classList.remove("show");
 
-    const start = performance.now();
+    const start=performance.now();
 
     function enter(now){
 
-        const p =
-            Math.min(
-                (now-start)/1800,
-                1
-            );
+        const p=Math.min(
+            (now-start)/1800,
+            1
+        );
 
-        const ease =
-            1-Math.pow(1-p,4);
+        const e=easeOutCubic(p);
 
         if(discoBall){
 
-            discoBall.rotation.x += 0.08;
-            discoBall.rotation.y += 0.14;
-            discoBall.rotation.z += 0.06;
+            discoBall.rotation.y+=0.22;
+            discoBall.rotation.x+=0.08;
+            discoBall.rotation.z+=0.05;
+
+            camera.position.z=
+                THREE.MathUtils.lerp(
+                    18,
+                    0.45,
+                    e
+                );
 
             discoBall.scale.setScalar(
-                5.8 + ease*18
+
+                (targetScale*
+                (1+(e*5)))
+
+                /
+
+                Math.max(
+                    discoBall.scale.x/targetScale,
+                    1
+                )
+
             );
 
         }
-
-        camera.position.z =
-            18 - ease*17;
 
         renderer.render(scene,camera);
 
@@ -177,8 +204,9 @@ window.addEventListener("click", () => {
 
         }else{
 
-            // AQUI depois iremos mostrar
-            // a próxima seção do site.
+            // PRÓXIMA ETAPA DO SITE
+            // Aqui depois vamos trocar de tela
+            // (menu, convite, etc.)
 
             console.log("Entrou na pista!");
 
