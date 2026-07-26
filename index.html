@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>±15 | Mais ou Menos 15</title>
+<title>±15</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-    <div id="scene"></div>
+<div id="loading">
+    Carregando...
+</div>
 
-    <p id="touch">
-        Toque para entrar na pista
-    </p>
+<div id="scene"></div>
 
-    <script type="module" src="script.js"></script>
+<div id="touch">
+    Toque para entrar na pista
+</div>
+
+<script type="importmap">
+{
+    "imports":{
+        "three":"https://unpkg.com/three@0.165.0/build/three.module.js",
+        "three/addons/":"https://unpkg.com/three@0.165.0/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module" src="script.js"></script>
 
 </body>
-
 </html>
