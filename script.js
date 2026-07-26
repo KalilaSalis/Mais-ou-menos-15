@@ -1,13 +1,11 @@
-// script.js
-
-import * as THREE from "https://unpkg.com/three@0.165.0/build/three.module.js";
-import { GLTFLoader } from "https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
 const camera = new THREE.PerspectiveCamera(
-    45,
+    40,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
@@ -20,96 +18,144 @@ const renderer = new THREE.WebGLRenderer({
     alpha:true
 });
 
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 renderer.setSize(window.innerWidth,window.innerHeight);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-document.getElementById("scene").appendChild(renderer.domElement);
 
-// ==================== LUZES ====================
+document
+.getElementById("scene")
+.appendChild(renderer.domElement);
 
-scene.add(new THREE.AmbientLight(0xffffff,1.6));
+const ambient=new THREE.AmbientLight(
+    0xffffff,
+    2
+);
 
-const pink = new THREE.PointLight(0xcc2656,45,60);
-pink.position.set(-6,3,8);
+scene.add(ambient);
+
+const pink=new THREE.PointLight(
+    0xcc2656,
+    60,
+    100
+);
+
+pink.position.set(
+    -5,
+    3,
+    8
+);
+
 scene.add(pink);
 
-const wine = new THREE.PointLight(0x620615,40,60);
-wine.position.set(6,-2,7);
+const wine=new THREE.PointLight(
+    0x620615,
+    55,
+    100
+);
+
+wine.position.set(
+    6,
+    -2,
+    8
+);
+
 scene.add(wine);
 
-const white = new THREE.PointLight(0xffffff,35,80);
-white.position.set(0,5,12);
+const white=new THREE.PointLight(
+    0xffffff,
+    40,
+    80
+);
+
+white.position.set(
+    0,
+    5,
+    12
+);
+
 scene.add(white);
 
-// ==================== MODELO ====================
+const loader=new GLTFLoader();
 
-const loader = new GLTFLoader();
+const loading=document.getElementById("loading");
+const touch=document.getElementById("touch");
 
-let discoBall;
-
-const targetScale = 5;
-
-loader.load("disco-ball.glb",(gltf)=>{
-
-    discoBall = gltf.scene;
-
-    scene.add(discoBall);
-
-    const box = new THREE.Box3().setFromObject(discoBall);
-
-    const size = new THREE.Vector3();
-    box.getSize(size);
-
-    const maxSide = Math.max(size.x,size.y,size.z);
-
-    const scale = targetScale/maxSide;
-
-    discoBall.scale.setScalar(scale);
-
-    box.setFromObject(discoBall);
-
-    const center = new THREE.Vector3();
-    box.getCenter(center);
-
-    discoBall.position.sub(center);
-
-    discoBall.position.z = -95;
-
-    discoBall.rotation.x = 0.25;
-    discoBall.rotation.y = Math.PI;
-
-});
-
-const clock = new THREE.Clock();
+let ball=null;
 
 let introFinished=false;
 
-const touch=document.getElementById("touch");
+const clock=new THREE.Clock();
 
-function easeOutCubic(x){
+loader.load(
+
+    "disco-ball.glb",
+
+    (gltf)=>{
+
+        ball=gltf.scene;
+
+        scene.add(ball);
+
+        const box=new THREE.Box3().setFromObject(ball);
+
+        const size=new THREE.Vector3();
+
+        box.getSize(size);
+
+        const max=Math.max(
+            size.x,
+            size.y,
+            size.z
+        );
+
+        const scale=5/max;
+
+        ball.scale.setScalar(scale);
+
+        box.setFromObject(ball);
+
+        const center=new THREE.Vector3();
+
+        box.getCenter(center);
+
+        ball.position.sub(center);
+
+        ball.position.z=-90;
+
+        ball.rotation.x=.2;
+
+        loading.classList.add("hide");
+
+    }
+
+);
+
+function ease(x){
+
     return 1-Math.pow(1-x,3);
+
 }
 
 function animate(){
 
     requestAnimationFrame(animate);
 
-    const t=Math.min(clock.getElapsedTime()/3,1);
+    const t=Math.min(
+        clock.getElapsedTime()/3,
+        1
+    );
 
-    if(discoBall){
+    if(ball){
 
-        const e=easeOutCubic(t);
+        ball.position.z=
+        THREE.MathUtils.lerp(
+            -90,
+            0,
+            ease(t)
+        );
 
-        discoBall.position.z=
-            THREE.MathUtils.lerp(
-                -95,
-                0,
-                e
-            );
-
-        discoBall.rotation.y+=0.010;
-        discoBall.rotation.x+=0.002;
-        discoBall.rotation.z+=0.0015;
+        ball.rotation.y+=0.01;
+        ball.rotation.x+=0.002;
+        ball.rotation.z+=0.001;
 
         if(t===1 && !introFinished){
 
@@ -121,12 +167,13 @@ function animate(){
 
     }
 
-    renderer.render(scene,camera);
+    renderer.render(
+        scene,
+        camera
+    );
 
 }
 animate();
-
-// ==================== RESPONSIVIDADE ====================
 
 window.addEventListener("resize",()=>{
 
@@ -143,8 +190,6 @@ window.addEventListener("resize",()=>{
 
 });
 
-// ==================== ENTRADA NA PISTA ====================
-
 let entering=false;
 
 window.addEventListener("click",()=>{
@@ -155,43 +200,44 @@ window.addEventListener("click",()=>{
     entering=true;
 
     touch.classList.remove("show");
+    touch.classList.add("fadeOut");
 
     const start=performance.now();
 
     function enter(now){
 
         const p=Math.min(
-            (now-start)/1800,
+            (now-start)/1700,
             1
         );
 
-        const e=easeOutCubic(p);
+        const e=ease(p);
 
-        if(discoBall){
+        if(ball){
 
-            discoBall.rotation.y+=0.22;
-            discoBall.rotation.x+=0.08;
-            discoBall.rotation.z+=0.05;
+            ball.rotation.y+=0.18;
+            ball.rotation.x+=0.05;
+            ball.rotation.z+=0.03;
 
             camera.position.z=
                 THREE.MathUtils.lerp(
                     18,
-                    0.45,
+                    0.35,
                     e
                 );
 
-            discoBall.scale.setScalar(
+            const s=
+                THREE.MathUtils.lerp(
+                    1,
+                    6,
+                    e
+                );
 
-                (targetScale*
-                (1+(e*5)))
-
-                /
-
-                Math.max(
-                    discoBall.scale.x/targetScale,
-                    1
-                )
-
+            ball.scale.setScalar(
+                s*(5/Math.max(
+                    ball.scale.x,
+                    0.0001
+                ))*ball.scale.x
             );
 
         }
@@ -204,11 +250,10 @@ window.addEventListener("click",()=>{
 
         }else{
 
-            // PRÓXIMA ETAPA DO SITE
-            // Aqui depois vamos trocar de tela
-            // (menu, convite, etc.)
+            document.body.style.background="#000";
 
-            console.log("Entrou na pista!");
+            // AQUI entraremos na próxima tela
+            // depois vamos trocar pelo menu.
 
         }
 
