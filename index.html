@@ -3,44 +3,41 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>±15 | Mais ou Menos 15</title>
+<title>±15 | Mais ou Menos 15</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<section id="intro">
+<div id="scene"></div>
 
-    <div id="lights"></div>
+<p id="touch">
+    Toque para entrar na pista
+</p>
 
-    <img
-        id="ball"
-        src="disco-ball.png"
-        alt="Globo de Espelhos">
+<script type="module">
 
-    <h1>±15</h1>
+import * as THREE from "https://unpkg.com/three@0.165.0/build/three.module.js";
 
-    <p class="subtitle">
-        Mais ou Menos 15
-    </p>
+import { GLTFLoader } from "https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js";
 
-    <p class="touch">
-        Toque para entrar na pista
-    </p>
+window.THREE = THREE;
+window.GLTFLoader = GLTFLoader;
 
-</section>
+</script>
 
-<script src="script.js"></script>
+<script src="script.js" type="module"></script>
 
 </body>
 
